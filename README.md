@@ -1,4 +1,4 @@
-# 🧠 AI HelpyChat QA Project
+# 🧠 AI HelpyChat QA Project!
 
 > **"모든 AI 업무를 하나의 플랫폼에서 해결한다."**  
 > HelpyChat은 엘리스 트랙에서 개발한 **통합형 AI 솔루션**으로,  
