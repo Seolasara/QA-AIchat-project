@@ -9,12 +9,12 @@ def test_helpychat_login(driver):
     """HelpyChat 로그인 자동화 테스트"""
     # 1️⃣ 로그인 페이지 접속
     driver.get(
-        "https://accounts.elice.io/accounts/signin/me?continue_to=https%3A%2F%2Fqatrack.elice.io%2Fai-helpy-chat&lang=en-US&org=qatrack"
+        "https://qaproject.elice.io/ai-helpy-chat"
     )
 
     # 2️⃣ 이메일 입력
     id_field = driver.find_element(By.ID, ":r0:")
-    id_field.send_keys("wivepam991@fandoe.com")
+    id_field.send_keys("team2@elice.com")
 
     # 3️⃣ 비밀번호 필드 선택
     pw_field = WebDriverWait(driver, 10).until(
@@ -22,7 +22,7 @@ def test_helpychat_login(driver):
     )
 
     # 4️⃣ JavaScript로 React MUI 필드에 값 입력
-    password = "password123!"
+    password = "team2elice!@"
     driver.execute_script("""
     const input = arguments[0];
     const value = arguments[1];
