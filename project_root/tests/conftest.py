@@ -11,6 +11,7 @@ def driver():
     #driver.maximize_window()
     driver.implicitly_wait(5)
     yield driver
+<<<<<<< HEAD
     driver.quit()
 
 @pytest.fixture(scope="session", autouse=True)
@@ -36,3 +37,6 @@ def setup_logger():
     logging.info("=== ✅ 전역 로거 설정 완료 ===")
     yield
     logging.info("=== 🧾 테스트 세션 종료 ===")
+=======
+    driver.quit()
+>>>>>>> feature_chat_advanced
