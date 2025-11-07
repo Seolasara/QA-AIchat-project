@@ -9,7 +9,7 @@ def test_ACCT005_extreme_email_input(driver):
     # 이메일 필드에 극단적 입력
     extreme_email = "team2@elice.com" + "asdf" * 10
 
-    login_page.enter_email(extreme_input)
+    login_page.enter_email(extreme_email)
     login_page.enter_password(login_page.config["login_pw"])
     login_page.click_login_button()
 
