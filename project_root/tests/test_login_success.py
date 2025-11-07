@@ -1,7 +1,7 @@
 import time
 from src.pages.login_page import LoginPage
 
-def test_helpychat_login(driver):
+def test_ACCT002_login_success(driver):
     login_page = LoginPage(driver)
     login_page.page_open()
     login_page.login()
