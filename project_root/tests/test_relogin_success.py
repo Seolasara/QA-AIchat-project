@@ -15,22 +15,19 @@ def test_ACCT008_relogin_success(driver,login):
 
 
     # 로그아웃 시도
-    profile = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, "button.MuiAvatar-root"))
-    )
-    profile.click()
+    wait.until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "svg[data-testid='PersonIcon']"))
+    ).click()
 
     wait.until(
         EC.visibility_of_element_located((By.CSS_SELECTOR, "div[data-elice-user-profile-content='true']"))
     )
-    
-    # UI가 완전히 뜰 때까지 조금 더 대기(다른 요소에 의한 요소 가림 방지) 
-    time.sleep(1)
+     
+    time.sleep(1) # UI가 완전히 뜰 때까지 조금 더 대기(다른 요소에 의한 요소 가림 방지)
 
-    logout_button = wait.until(
+    wait.until(
         EC.element_to_be_clickable((By.XPATH, "//p[text()='로그아웃']"))
-    )
-    logout_button.click()
+    ).click()
 
 
     # 로그아웃 후 비밀번호 입력칸이 보일 때까지 대기

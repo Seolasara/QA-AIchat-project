@@ -16,7 +16,7 @@ def test_ACCT009_logout_success(driver,login):
 
     # 로그아웃 시도 / 프로필 클릭
     profile = wait.until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, "button.MuiAvatar-root"))
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "svg[data-testid='PersonIcon']"))
     )
     profile.click()
 
