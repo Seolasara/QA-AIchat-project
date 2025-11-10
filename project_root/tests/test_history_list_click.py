@@ -12,7 +12,7 @@ def test_HIST028_agent_btn(driver,login,send_test_message) :
     # 메인페이지 이동
     driver.get("https://qaproject.elice.io/ai-helpy-chat")
 
-    # 히스토리 중 가장 최신대화 출력
+    # 히스토리 중 가장 최신대화 클릭
     list = driver.find_elements(By.CSS_SELECTOR, '[data-testid="virtuoso-item-list"] [data-index="0"]')
     history_frist = list[0]
     history_frist.click()
@@ -23,7 +23,7 @@ def test_HIST028_agent_btn(driver,login,send_test_message) :
     user_msg = chat_container.find_elements(By.CSS_SELECTOR, "div[data-step-type='user_message'] .prose")
     ai_msg = chat_container.find_elements(By.CSS_SELECTOR, "div[data-step-type='assistant_message'] .prose")
 
-    assert len(user_msg) > 0 and len(ai_msg) > 0, "⛔ [FAIL] 사용자 또는 에이전트 메시지 확인 실패"
-    print("✅ [PASS] 사용자 및 에이전트 메시지 정상 확인")
+    assert len(user_msg) > 0 and len(ai_msg) > 0, "⛔ [FAIL] 사용자 또는 헬피 메시지 확인 실패"
+    print("✅ [PASS] 사용자 및 헬피 메시지 정상 확인")
 
 
