@@ -5,7 +5,7 @@ from src.pages.agent_enter_page import AgentEnterPage
 from selenium.webdriver.support.ui import WebDriverWait 
 from selenium.webdriver.support import expected_conditions as EC
 
-def test_CSTM022_my_agent(driver, login):
+def test_CSTM022_my_agent_click(driver, login):
 
     # 에이전트 페이지 접속
     agent_page = AgentEnterPage(driver)
