@@ -74,7 +74,7 @@ class AgentPage:
                 el.click()
 
     # 기능 체크박스 클릭(복수)
-    def checkbox_functions(self, functions):
+    def checkbox_functions(self, *functions):
         for function in functions:
             self.checkbox_function(function)
 
