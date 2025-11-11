@@ -24,7 +24,7 @@ def test_CSTM003_try_without_essential(new_agent):
 
     assert not button_active, "[FAIL] 만들기 버튼 활성화"
 
-    print("❎ [FAIL] 에이전트 생성 실패 - 필수값 미입력") 
+    print("❎ [XFAIL] 에이전트 생성 실패 - 필수값 미입력") 
 
 
     # --- 이름 필드 입력만으로 생성 시도 --- 
@@ -44,4 +44,4 @@ def test_CSTM004_with_name_input(new_agent):
 
     assert not button_active, "[FAIL] 만들기 버튼 활성화"
 
-    print("❎ [FAIL] 에이전트 생성 실패 - 규칙 미입력") 
+    print("❎ [XFAIL] 에이전트 생성 실패 - 규칙 미입력") 
