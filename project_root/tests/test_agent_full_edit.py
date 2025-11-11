@@ -56,6 +56,9 @@ def test_CSTM024_my_agent_edit(driver, new_agent):
     time.sleep(0.5)
     new_agent.set_rules("수정 완료 된 테스트 에이전트 입니다.")
 
+    # 시작 대화
+    new_agent.set_start_message("수정 완료 된 테스트 에이전트 입니다.")
+
     # 기능 체크
     new_agent.checkbox_functions("search", "browsing")
     time.sleep(3)
