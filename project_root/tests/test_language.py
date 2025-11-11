@@ -9,8 +9,8 @@ from selenium.webdriver.support import expected_conditions as EC
 def test_account2(driver):
     wait = WebDriverWait(driver, 10)
     driver.get("https://qaproject.elice.io/ai-helpy-chat")
-    driver.find_element(By.NAME, "loginId").send_keys("wivepam991@fandoe.com")
-    driver.find_element(By.NAME, "password").send_keys("password123!")
+    driver.find_element(By.NAME, "loginId").send_keys("team2a@elice.com")
+    driver.find_element(By.NAME, "password").send_keys("team2elice!@")
     driver.find_element(By.XPATH, "//button[text()='Login']").click()
     return driver
 
@@ -130,7 +130,7 @@ def test_ACCT013_change_english_relogin(language):
     print("✅ [PASS] 로그아웃 성공")
 
     # 4. 재로그인
-    wait.until(EC.visibility_of_element_located((By.NAME, "password"))).send_keys("password123!")
+    wait.until(EC.visibility_of_element_located((By.NAME, "password"))).send_keys("team2elice!@")
     driver.find_element(By.XPATH, "//button[text()='Login']").click()
     wait.until(EC.url_contains("qaproject.elice.io"))
 
