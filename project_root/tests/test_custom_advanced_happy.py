@@ -69,3 +69,57 @@ def test_CSTM011_large_image(new_agent):
     time.sleep(3)
 
 
+    # --- 모든 기능 설정한 에이전트 생성 --- 
+def test_CSTM013_with_all_functions(new_agent):
+
+    # 1. 이미지 업로드
+    WebDriverWait(new_agent.driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "svg[data-testid='plusIcon']"))).click()
+    file_input = WebDriverWait(new_agent.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']")))
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    image_path = os.path.join(project_root, "src", "resources", "20.5mb.jpg")
+    assert os.path.exists(image_path), f"[FAIL] 파일 없음: {image_path}"
+
+    file_input.send_keys(image_path)
+    image = WebDriverWait(new_agent.driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'img.MuiAvatar-img')))
+
+    assert image.is_displayed(), "[FAIL] 이미지 업로드 실패"
+    print("✅ [PASS] 이미지 업로드 성공") 
+    time.sleep(3)
+
+    # 2. 입력 필드 이름/한줄 소개/규칙/시작대화 입력 
+    new_agent.set_name("테스트2")
+    time.sleep(3)
+    new_agent.set_description("테스트2")
+    time.sleep(3)
+    new_agent.set_rules("테스트2")
+    time.sleep(3)
+    new_agent.set_start_message("테스트2")
+
+    # 3. 파일 업로드(1번과 같은 파일)
+    # WebDriverWait(new_agent.driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//label[text()='파일 업로드']")))
+    # file_input = WebDriverWait(new_agent.driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']")))
+    # project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # image_path = os.path.join(project_root, "src", "resources", "20.5mb.jpg")
+    # assert os.path.exists(image_path), f"[FAIL] 파일 없음: {image_path}"
+
+    # file_input.send_keys(image_path)
+    # image = WebDriverWait(new_agent.driver, 20).until(EC.visibility_of_element_located((By.XPATH, "//p[text()='20.5mb.jpg']")))
+
+    # assert image_label.is_displayed(), "[FAIL] 파일 업로드 실패"
+    # print("✅ [PASS] 파일 업로드 성공")
+
+    # 4. 기능 전체 선택
+    new_agent.checkbox_functions("search", "browsing", "image", "execution")
+    
+    # 5. 만들기/저장 클릭
+    new_agent.click_create()
+    new_agent.click_save()
+
+    # 6. 에이전트 생성 메세지 확인
+    text = WebDriverWait(new_agent.driver, 10).until(
+        EC.presence_of_element_located((By.ID, "notistack-snackbar"))
+    ).text.strip()
+
+    assert "에이전트가 생성 되었습니다." in text, "[FAIL] 생성 실패"
+    print("✅ [PASS] 에이전트 생성 완료") 
+
