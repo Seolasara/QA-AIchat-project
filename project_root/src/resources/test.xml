@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+	<testsuite name="TestSample-20251022182118" tests="1" file=".py" time="0.001" timestamp="2025-10-22T18:21:18" failures="0" errors="0" skipped="0">
+		<testcase classname="TestSample" name="test_add" time="0.001" timestamp="2025-10-22T18:21:18" file="/Users/Sara/Documents/Python 실습/챕터7 프로젝트/ex1/tests/test_sample.py" line="8"/>
+	</testsuite>
+</testsuites>
