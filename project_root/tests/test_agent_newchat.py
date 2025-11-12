@@ -4,7 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from src.pages.login_page import LoginPage
 from src.pages.agent_enter_page import AgentEnterPage
 
-def test_HIST025_agent_btn(driver,login) :
+def test_HIST025_agent_newchat(driver,login) :
 
     # 에이전트 페이지 접속
     agent_page = AgentEnterPage(driver)
@@ -17,7 +17,7 @@ def test_HIST025_agent_btn(driver,login) :
     time.sleep(3)
     
     # 테스트 메세지 전송
-    msg_input = driver.find_element(By.NAME,"input").send_keys("무슨 에이전트인지 소개해줘")
+    msg_input = driver.find_element(By.NAME,"input").send_keys("무슨 에이전트인지 한줄로 소개해줘")
     msg_btn = driver.find_element(By.CSS_SELECTOR, 'button[aria-label="보내기"]').click()
     time.sleep(3)
 
