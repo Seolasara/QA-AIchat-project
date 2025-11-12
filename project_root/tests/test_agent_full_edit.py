@@ -12,10 +12,15 @@ def test_CSTM024_my_agent_edit(driver, new_agent):
 
     # 수정용 에이전트 생성
     new_agent.set_name("수정 테스트용 에이전트") 
+    new_agent.set_description("한줄 소개 테스트")
     time.sleep(3)
     new_agent.set_rules("수정 테스트") 
     new_agent.set_start_message("수정 테스트 에이전트 입니다.")
-    new_agent.upload_file("testfile2.pdf")
+    wait = WebDriverWait(new_agent.driver, 10) 
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
+    file_path = os.path.join(project_root, "src", "resources", "testfile2.pdf") 
+    file_input = wait.until(EC.presence_of_element_located((By.XPATH, "(//input[@type='file'])[2]"))) 
+    file_input.send_keys(file_path)
     new_agent.checkbox_functions("search", "browsing", "image", "execution")
     new_agent.click_create()
     new_agent.click_save()
@@ -28,12 +33,12 @@ def test_CSTM024_my_agent_edit(driver, new_agent):
     # 내 에이전트 이동
     my_agent_btn = driver.find_element(By.LINK_TEXT, "내 에이전트")
     my_agent_btn.click()
-    time.sleep(5)
+    time.sleep(3)
 
     # 에이전트 선택
     first_agent = driver.find_elements(By.CSS_SELECTOR, 'button svg[data-testid="penIcon"]')[0]
     first_agent.click()
-    time.sleep(5)
+    time.sleep(3)
     
 # 에이전트 수정
     new_agent = AgentPage(driver)

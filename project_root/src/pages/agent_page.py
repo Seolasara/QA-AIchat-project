@@ -1,4 +1,6 @@
 import os
+import time
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -43,9 +45,15 @@ class AgentPage:
         el.send_keys(name)
 
     def set_description(self, desc):
-        el = self.driver.find_element(*self.description_field)
-        el.clear()
-        el.send_keys(desc)
+        el = self.driver.find_element(*self.name_field)
+        el.send_keys(Keys.TAB)
+        time.sleep(1)
+        description_el = self.driver.switch_to.active_element  # 현재 포커스 input
+        self.driver.execute_script("""
+        arguments[0].value = arguments[1];
+        arguments[0].dispatchEvent(new Event('input', { bubbles: true }));
+        arguments[0].dispatchEvent(new Event('change', { bubbles: true }));
+        """, description_el, desc)
 
     def set_rules(self, rules):
         el = self.driver.find_element(*self.rules_field)
@@ -56,15 +64,6 @@ class AgentPage:
         el = self.driver.find_element(*self.start_message)
         el.clear()
         el.send_keys(msg)
-
-    # 지식 파일 업로드(단일)
-    def upload_file(self, filename, timeout=10):
-        wait = WebDriverWait(self.driver, timeout)
-        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        file_path = os.path.join(project_root, "src", "resources", filename)
-
-        file_input_el = wait.until(EC.presence_of_element_located(self.file_input))
-        file_input_el.send_keys(file_path)
 
     # 기능 체크박스 클릭(단일)
     def checkbox_function(self, function):
