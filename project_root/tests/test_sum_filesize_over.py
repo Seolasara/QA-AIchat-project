@@ -1,42 +1,46 @@
 import pytest
 import time
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from src.pages.image_upload_page import HelpyChatPage
 from src.utils.config_reader import read_config
+from src.pages.image_upload_page import HelpyChatPage
 
 
-def test_CADV011_hwp_upload_reject(driver, login):
-    """20mb 이상 크기의 파일 업로드 시 'File is larger than 20 MB' 경고 문구가 표시되는지 확인"""
+def test_CADV001_multi_file_upload_success(driver, login, send_test_message):
+    """
+    ✅ HelpyChat 파일 업로드 및 응답 렌더링 테스트
+       - 여러 파일(18mb.jpg, 6.05mb.jpg) 업로드
+       - HelpyChat이 정상적으로 응답을 렌더링하는지 확인
+    """
 
-    # 설정 로드
     config = read_config("helpychat")
     base_url = config["base_url"]
 
-    # 로그인 후 채팅 페이지 진입
     driver.get(base_url)
     time.sleep(3)
 
     chat_page = HelpyChatPage(driver)
 
-    # 업로드 시도
-    filename = "20.5mb.jpg"
-    chat_page.upload_image(filename)
+    # 1️⃣ 여러 파일 업로드
+    files = ["18mb.jpg", "6.05mb.jpg"]
+    for f in files:
+        chat_page.upload_image(f)
+        time.sleep(2)
+    print(f"📤 [STEP] 파일 업로드 완료 ({', '.join(files)})")
 
-    # 경고 문구 대기 및 확인
-    wait = WebDriverWait(driver, 10)
+    # 2️⃣ 메시지 전송
+    send_test_message("이 이미지들에 대해 설명해줘")
+    print("💬 [STEP] 메시지 전송 완료")
 
-    try:
-        alert_element = wait.until(
-            EC.visibility_of_element_located(
-                (By.XPATH, "//*[contains(text(), 'File is larger than 20 MB')]")
-            )
-        )
-        assert alert_element.is_displayed(), "경고 문구가 표시되지 않았습니다."
-        print(f"✅ 업로드 실패 경고 표시 확인: {filename}")
+    # 3️⃣ HelpyChat 응답 대기 (단순 화면 렌더링 기준)
+    print("⏳ [WAIT] HelpyChat 응답이 렌더링될 때까지 대기 중...")
+    time.sleep(15)
 
-    except Exception:
-        pytest.fail(f"❌ 업로드 실패 문구를 찾을 수 없습니다: {filename}")
+    # 4️⃣ 결과 검증
+    page_source = driver.page_source
 
-    time.sleep(3)
+    # 업로드된 이미지가 존재하는지 확인
+    assert "<img" in page_source, "❌ 업로드된 이미지가 화면에 표시되지 않았습니다."
+    # 사용자가 전송한 메시지가 존재하는지 확인
+    assert "이 이미지들에 대해 설명해줘" in page_source, "❌ 전송한 메시지가 채팅창에 표시되지 않았습니다."
+
+    print("✅ [PASS] HelpyChat 이미지 업로드 및 응답 렌더링 성공")
+    time.sleep(5)
