@@ -22,13 +22,15 @@ def test_CSTM030_agent_delete(driver,login) :
     delete_button = driver.find_element(By.XPATH, "//button[text()='삭제']").click()
 
     # 삭제 메세지
+    wait.until(EC.text_to_be_present_in_element((By.ID, "notistack-snackbar"), "에이전트가 삭제되었습니다."))
     message = wait.until(EC.presence_of_element_located((By.ID, "notistack-snackbar"))).text.strip()
-    assert "에이전트가 삭제되었습니다." in message, "⛔ [FAIL] 삭제 실패"
+    assert "에이전트가 삭제되었습니다." in message, "⛔ [FAIL] 삭제 완료 메세지X"
     print("✅ [PASS] 에이전트 삭제 완료") 
 
 
     
 def test_CSTM031_agent_delete_refresh(driver, new_agent):
+    wait = WebDriverWait(driver, 10)
 
     # 삭제용 에이전트 생성
     new_agent.set_name("삭제 테스트용 에이전트") 
@@ -52,8 +54,10 @@ def test_CSTM031_agent_delete_refresh(driver, new_agent):
     # 에이전트 삭제
     first_agent = driver.find_elements(By.CSS_SELECTOR, 'button svg[data-testid="trashIcon"]')[0].click()
     delete_button = driver.find_element(By.XPATH, "//button[text()='삭제']").click()
-    message = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "notistack-snackbar"))).text.strip()
-    assert "에이전트가 삭제되었습니다." in message, "⛔ [FAIL] 삭제 실패"
+    wait.until(EC.text_to_be_present_in_element((By.ID, "notistack-snackbar"), "에이전트가 삭제되었습니다."))
+    message = wait.until(EC.presence_of_element_located((By.ID, "notistack-snackbar"))).text.strip()
+    assert "에이전트가 삭제되었습니다." in message, "⛔ [FAIL] 삭제 완료 메세지X"
+    print("✅ [PASS] 에이전트 삭제 완료") 
 
     # 새로고침 후 삭제 재확인
     driver.refresh()
@@ -61,4 +65,4 @@ def test_CSTM031_agent_delete_refresh(driver, new_agent):
     agents = driver.find_elements(By.CSS_SELECTOR, "div[data-testid='virtuoso-item-list']")
     agent_names = [a.text for a in agents]
     assert "삭제 테스트용 에이전트" not in agent_names, "⛔ [FAIL] 에이전트 삭제되지 않음"
-    print("✅ [PASS] 에이전트 삭제 완료") 
+    print("✅ [PASS] 에이전트 삭제 재확인 완료") 
