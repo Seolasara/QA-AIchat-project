@@ -25,7 +25,7 @@ def test_CADV032_google_search_request(driver, login, click_plus, send_test_mess
         ))
     )
     driver.execute_script("arguments[0].click();", google_search_btn)
-    print("🔍 '구글 검색' 버튼 클릭 완료")
+    print("✅ '구글 검색' 버튼 클릭 완료")
 
     # 사용자 메시지 전송
     send_test_message("현재 대전 온도 알려줘")
@@ -38,12 +38,12 @@ def test_CADV032_google_search_request(driver, login, click_plus, send_test_mess
 
     # ✅ 텍스트 추출 및 검증
     response_text = response_box.get_attribute("innerText")
-    print(f"📨 Helpy 응답 감지됨:\n{response_text}")
+    print(f"✅ Helpy 응답 감지됨:\n{response_text}")
 
     keywords = ["Daejeon", "대전", "온도", "℃", "°C", "temperature"]
     matched = [kw for kw in keywords if kw.lower() in response_text.lower()]
 
     assert len(matched) >= 2, f"❌ Helpy 응답 내 키워드 부족: {matched}"
-    print(f"✅ HelpyChat 구글 검색 테스트 통과 — 감지된 키워드 {matched}")
+    print(f"✅ HelpyChat 구글 검색 테스트 통과(감지된 키워드: {matched})")
 
     time.sleep(2)

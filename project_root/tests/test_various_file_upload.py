@@ -6,7 +6,7 @@ from src.utils.config_reader import read_config
 
 
 def test_CADV005_multi_file_upload_single_session(driver, login, send_test_message):
-    """jpg, txt, pdf 파일을 연속 첨부하여 업로드가 정상 동작하는지 확인"""
+    """ docx, pptx, jpg, txt, pdf, xlsx, csv, xml, bmp, tiff, webp, html, gif, htm, jpeg 파일(15개)을 연속 첨부하여 업로드가 정상 동작하는지 확인"""
 
     # 설정 로드
     config = read_config("helpychat")
@@ -19,11 +19,11 @@ def test_CADV005_multi_file_upload_single_session(driver, login, send_test_messa
     chat_page = HelpyChatPage(driver)
 
     # 업로드할 파일 리스트
-    files = ["dogimage.jpg", "test.txt", "testfile2.pdf"]
+    files = ["testfile.docx","test.pptx","dogimage.jpg", "test.txt", "testfile2.pdf","test.xlsx", "test.csv","test_data.xml","test_image.bmp","test_image.tiff","test_image.webp","test_page.html","sample.gif","sample.htm","sample.jpeg"]
 
     # 한 세션 내에서 연속 업로드
     for filename in files:
-        print(f"📂 {filename} 업로드 시도 중...")
+        print(f"✅ {filename} 업로드 중")
         chat_page.upload_image(filename)
         send_test_message(f"{filename} 파일 업로드 테스트입니다.")
         time.sleep(2)

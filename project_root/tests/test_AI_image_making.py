@@ -15,14 +15,9 @@ def test_CADV090_image_generation(driver, login, click_plus, send_test_message):
     click_plus()
 
     # 1️⃣ '이미지 생성' 버튼 클릭
-    image_button = wait.until(
-        EC.element_to_be_clickable((
-            By.XPATH,
-            "//div[@role='button']//span[contains(text(), '이미지 생성')]"
-        ))
-    )
+    image_button = wait.until(EC.element_to_be_clickable((By.XPATH,"//div[@role='button']//span[contains(text(), '이미지 생성')]")))
     driver.execute_script("arguments[0].click();", image_button)
-    print("🖼️ '이미지 생성' 버튼 클릭 완료")
+    print("✅ '이미지 생성' 버튼 클릭 완료")
 
     # 2️⃣ 기존 이미지 src 수집
     initial_srcs = {
@@ -30,13 +25,13 @@ def test_CADV090_image_generation(driver, login, click_plus, send_test_message):
         for img in driver.find_elements(By.TAG_NAME, "img")
         if img.get_attribute("src")
     }
-    print(f"📸 기존 이미지 {len(initial_srcs)}개 수집 완료")
+    print(f"✅ 기존 이미지 {len(initial_srcs)}개 수집 완료")
 
     # 3️⃣ 메시지 전송
     send_test_message("귀여운 고양이 일러스트를 만들어줘")
 
     # 4️⃣ 새 이미지 감시 (최대 2분)
-    print("⏳ AI 이미지 렌더링 대기 중...")
+    print("✅ AI 이미지 렌더링 대기 중...")
     detected = False
     for sec in range(0, 120, 5):
         time.sleep(5)

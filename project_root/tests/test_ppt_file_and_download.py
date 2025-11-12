@@ -25,22 +25,20 @@ def test_CADV078_ppt_create_and_download(driver, login, click_plus, send_test_me
 
 
     send_test_message("겨울에 주로 먹는 음식에 대한 ppt 만들어줘")
-
-    print("⏳ 생성 버튼 로딩 대기 (3초)...")
-    time.sleep(3)
+    time.sleep(3) #생성버튼 로딩대기
 
     create_button = wait.until(
         EC.element_to_be_clickable((By.XPATH, "//button[contains(normalize-space(.), '생성')]"))
     )
     driver.execute_script("arguments[0].click();", create_button)
-    print("▶️ '생성' 버튼 클릭 완료 — PPT 생성 시작")
+    print("✅ PPT 생성 시작")
 
     # 5PPT 생성 완료 문구 대기 및 검증
     complete_msg = WebDriverWait(driver, 300).until(
         EC.presence_of_element_located((By.XPATH, "//p[contains(text(),'프레젠테이션 생성이 완료되었습니다')]"))
     )
     assert "프레젠테이션 생성이 완료되었습니다" in complete_msg.text
-    print("✅ 프레젠테이션 생성 완료 문구 감지됨")
+    print("✅ 프레젠테이션 생성 완료 문구 감지")
 
     # 다운로드 전 폴더 상태 저장
     download_dir = os.path.join(os.path.expanduser("~"), "Downloads")
@@ -55,7 +53,7 @@ def test_CADV078_ppt_create_and_download(driver, login, click_plus, send_test_me
             ))
         )
         driver.execute_script("arguments[0].click();", download_button)
-        print("⬇️ 'PPTX 다운로드' 버튼 클릭 완료 — 파일 다운로드 시작")
+        print("✅ 파일 다운로드 시작")
     except Exception as e:
         print("❌ 'PPTX 다운로드' 버튼을 찾지 못했습니다:", e)
         assert False, "'PPTX 다운로드' 버튼 클릭 실패"

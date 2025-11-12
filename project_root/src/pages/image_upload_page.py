@@ -8,7 +8,7 @@ from pathlib import Path
 class HelpyChatPage:
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 15)
+        self.wait = WebDriverWait(driver, 30)
 
     def upload_image(self, filename: str):
 

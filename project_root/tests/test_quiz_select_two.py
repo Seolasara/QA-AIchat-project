@@ -17,14 +17,12 @@ def test_CADV088_quiz_multiple_answer(driver, login, click_plus, send_test_messa
 
     click_plus()
 
-    quiz_button = wait.until(
-        EC.element_to_be_clickable((By.XPATH, "//div[@role='button']//span[contains(text(), '퀴즈 생성')]"))
-    )
+    quiz_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@role='button']//span[contains(text(), '퀴즈 생성')]")))
     driver.execute_script("arguments[0].click();", quiz_button)
 
     send_test_message("우리나라 동물에 관한 퀴즈 복수 정답형으로 만들어줘")
 
-    print("⏳ 퀴즈 생성 중... (최대 5분 대기)")
+    print("✅ 퀴즈 생성 중 (최대 5분 대기)")
     try:
         WebDriverWait(driver, 300).until(
             EC.presence_of_element_located((By.XPATH, "//span[contains(text(),'완료')]"))

@@ -25,4 +25,4 @@ def test_CADV001_image_upload_success(driver, login, send_test_message):
     assert "<img" in driver.page_source
     assert "이 이미지에 대해 설명해줘" in driver.page_source
 
-    time.sleep(15)
+    time.sleep(10)
