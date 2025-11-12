@@ -28,7 +28,7 @@ def test_CSTM005_with_essential_field(new_agent):
         EC.presence_of_element_located((By.ID, "notistack-snackbar"))
     ).text.strip()
 
-    assert "에이전트가 생성 되었습니다." in text, "[FAIL] 생성 실패"
+    assert "에이전트가 생성 되었습니다." in text, "⛔ [FAIL] 생성 실패"
     print("✅ [PASS] 에이전트 생성 완료") 
 
 
@@ -73,7 +73,7 @@ def test_CSTM008_extreme_input(new_agent):
         EC.presence_of_element_located((By.ID, "notistack-snackbar"))
     ).text.strip()
 
-    assert "에이전트가 생성 되었습니다." in text, "[FAIL] 생성 실패"
+    assert "에이전트가 생성 되었습니다." in text, "⛔ [FAIL] 생성 실패"
     print("✅ [PASS] 에이전트 생성 완료") 
 
 
@@ -92,5 +92,5 @@ def test_CSTM009_unavailable_language(new_agent):
         EC.presence_of_element_located((By.ID, "notistack-snackbar"))
     ).text.strip()
 
-    assert "에이전트가 생성 되었습니다." in text, "[FAIL] 생성 실패"
+    assert "에이전트가 생성 되었습니다." in text, "⛔ [FAIL] 생성 실패"
     print("✅ [PASS] 에이전트 생성 완료") 

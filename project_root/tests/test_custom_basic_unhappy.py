@@ -22,7 +22,7 @@ def test_CSTM003_try_without_essential(new_agent):
     except TimeoutException:
         button_active = False
 
-    assert not button_active, "[FAIL] 만들기 버튼 활성화"
+    assert not button_active, "⛔ [FAIL] 만들기 버튼 활성화"
 
     print("❎ [XFAIL] 에이전트 생성 실패 - 필수값 미입력") 
 
@@ -42,6 +42,6 @@ def test_CSTM004_with_name_input(new_agent):
     except TimeoutException:
         button_active = False
 
-    assert not button_active, "[FAIL] 만들기 버튼 활성화"
+    assert not button_active, "⛔ [FAIL] 만들기 버튼 활성화"
 
     print("❎ [XFAIL] 에이전트 생성 실패 - 규칙 미입력") 
