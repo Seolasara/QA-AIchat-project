@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from src.pages.login_page import LoginPage
 
-def test_HIST017_newchat_create(driver,send_test_message,login) :
+def test_HIST017_close_btn(driver,send_test_message,login) :
 
     # 히스토리 검색 버튼 클릭
     search_btn = driver.find_element(
