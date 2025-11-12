@@ -8,12 +8,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 
-def test_CSTM024_my_agent_edit(driver, new_agent):
+def test_CSTM025_my_agent_light_edit(driver, new_agent):
 
     # 수정용 에이전트 생성
-    new_agent.set_name("수정 테스트용 에이전트") 
-    new_agent.set_description("한줄 소개 테스트")
-    new_agent.set_rules("수정 테스트") 
+    new_agent.set_name("일부 수정 테스트용 에이전트") 
+    new_agent.set_description("일부 한줄 소개 테스트")
+    new_agent.set_rules("일부 수정 테스트") 
     new_agent.set_start_message("수정 테스트 에이전트 입니다.")
     wait = WebDriverWait(new_agent.driver, 10) 
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) 
@@ -49,7 +49,7 @@ def test_CSTM024_my_agent_edit(driver, new_agent):
     for _ in range(len(current_value)):
         name.send_keys(Keys.BACKSPACE)
     time.sleep(0.2)
-    new_agent.set_name("수정 완료 된 에이전트")
+    new_agent.set_name("일부 수정 완료 된 에이전트")
 
     # 기존 한줄소개 지우고 수정
     desc = driver.find_element(By.CSS_SELECTOR, "input[name='description']")
@@ -58,7 +58,7 @@ def test_CSTM024_my_agent_edit(driver, new_agent):
     for _ in range(len(current_value)):
         desc.send_keys(Keys.BACKSPACE)
     time.sleep(0.2)
-    new_agent.set_description("수정 완료 된 한줄소개")
+    new_agent.set_description("일부 수정 완료 된 한줄소개")
 
     # 기존 규칙 지우고 수정
     rules = driver.find_element(*new_agent.rules_field)
@@ -67,23 +67,8 @@ def test_CSTM024_my_agent_edit(driver, new_agent):
     for _ in range(len(current_value)):
         rules.send_keys(Keys.BACKSPACE)
     time.sleep(0.2)
-    new_agent.set_rules("수정 완료 된 테스트 에이전트 입니다.")
+    new_agent.set_rules("일부 수정 완료 된 테스트 에이전트 입니다.")
     time.sleep(0.5)
-
-    # 시작 대화
-    close_buttons = driver.find_elements(By.CSS_SELECTOR, '[data-testid="xmarkIcon"]')
-    close_buttons[0].click()
-    new_agent.set_start_message("수정 완료 된 테스트 에이전트 입니다.")
-
-    # 파일 삭제
-    del_btn = driver.find_element(By.CSS_SELECTOR,'[aria-label="삭제"]')
-    del_btn.click()
-    time.sleep(2)
-
-    # 기능 체크 해제
-    search = driver.find_element(*new_agent.search_function).click()
-    browsing = driver.find_element(*new_agent.browsing_function).click()
-    time.sleep(3)
 
     update_btn = driver.find_element(By.XPATH, "//button[text()='업데이트']").click()
     new_agent.click_save()
@@ -98,6 +83,3 @@ def test_CSTM024_my_agent_edit(driver, new_agent):
 
     assert "수정 완료 된 에이전트" in first_agent.text, "⛔ [FAIL] 에이전트 수정 실패"
     print("✅ [PASS] 에이전트 수정 성공")
-
-
-
