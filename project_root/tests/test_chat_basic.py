@@ -8,22 +8,6 @@ from src.pages.login_page import LoginPage
 
 # CBAS001: 단일 질문 → 응답 확인
 def test_CBAS001_chat_basic(driver, login, send_test_message):
-
-    # # 질문(자연어) 입력
-    # input_box = WebDriverWait(driver, 10).until(
-    #     EC.visibility_of_element_located((By.CSS_SELECTOR, "textarea[placeholder='메시지를 입력하세요...']"))
-    # )
-    # input_box.send_keys("오늘 서울 날씨 어때?")
-    # time.sleep(1)  # React의 입력 감지 대기
-
-    # # 버튼 활성화될 때까지 기다리기
-    # send_button = WebDriverWait(driver, 10).until(
-    #     EC.element_to_be_clickable((By.CSS_SELECTOR, "button#chat-submit"))
-    # )
-
-    # # 전송
-    # send_button.click()
-    # print("✅ [PASS] 질문 전송 완료")
     
     send_test_message("오늘 서울 날씨 어때?")
     print("✅ [PASS] 질문 전송 완료")

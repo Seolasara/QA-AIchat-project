@@ -25,12 +25,12 @@ def test_CBAS037_ans_dislike(driver, login, send_test_message):
         EC.presence_of_element_located((By.CSS_SELECTOR, "div[data-step-type='assistant_message']"))
     )
     
-    # 좋아요 버튼 확인
+    # 싫어요 버튼 확인
     dislike_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.CSS_SELECTOR, "button:has(svg.lucide-thumbs-down)"))
     )
     
-    # 좋아요 버튼 클릭
+    # 싫어요 버튼 클릭
     dislike_button.click()
     print("✅ [PASS] 싫어요 버튼 클릭 완료")
     time.sleep(1)

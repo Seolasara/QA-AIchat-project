@@ -9,22 +9,6 @@ from src.pages.login_page import LoginPage
 # CBAS004: 긴 입력값 → 잘림 없이 전송 및 응답 확인
 def test_CBAS004_chat_long_input(driver, login, send_test_message):
     
-    # # 긴 질문 입력
-    # long_text = "긴 입력값 일 때 잘림 없이 전송 및 AI 응답 확인 테스트. " * 50
-    
-    # input_box = WebDriverWait(driver, 10).until(
-    #     EC.visibility_of_element_located((By.CSS_SELECTOR, "textarea[placeholder='메시지를 입력하세요...']"))
-    # )
-    # input_box.send_keys(long_text)
-    # time.sleep(1)
-    
-    # # 전송 버튼 클릭 가능 확인 후 전송
-    # send_button = WebDriverWait(driver, 10).until(
-    #     EC.element_to_be_clickable((By.CSS_SELECTOR, "button#chat-submit"))
-    # )
-    # send_button.click()
-    # print("✅ [PASS] 긴 입력값 전송 완료")
-    
     send_test_message("긴 입력값 일 때 잘림 없이 전송 및 AI 응답 확인 테스트 입니다. " * 50)
     print("✅ [PASS] 긴 입력값 전송 완료")
     
