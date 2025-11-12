@@ -1,8 +1,5 @@
 import pytest
 from selenium import webdriver
-import logging
-import os
-from datetime import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time

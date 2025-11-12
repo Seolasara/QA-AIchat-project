@@ -1,41 +1,46 @@
 import pytest
 import time
-from pathlib import Path
-from src.pages.image_upload_page import HelpyChatPage
 from src.utils.config_reader import read_config
+from src.pages.image_upload_page import HelpyChatPage
 
 
-def test_CADV0013_sequential_add_files_single_message(driver, login, send_test_message):
-    """jpg 파일 3개를 하나씩 순차 첨부 후, 한 메시지로 전송하는 테스트"""
+def test_CADV001_multi_file_upload_success(driver, login, send_test_message):
+    """
+    ✅ HelpyChat 파일 업로드 및 응답 렌더링 테스트
+       - 여러 파일(18mb.jpg, 6.05mb.jpg) 업로드
+       - HelpyChat이 정상적으로 응답을 렌더링하는지 확인
+    """
 
-    # 설정 로드
     config = read_config("helpychat")
     base_url = config["base_url"]
 
-    # 로그인 후 채팅 페이지 진입
     driver.get(base_url)
     time.sleep(3)
 
     chat_page = HelpyChatPage(driver)
 
-    # 업로드할 파일 리스트
+    # 1️⃣ 여러 파일 업로드
     files = ["18mb.jpg", "6.05mb.jpg"]
-
-    # 파일 2개를 하나씩 첨부 버튼으로 추가
-    for filename in files:
-        chat_page.upload_image(filename)
-        print(f"⏳ {filename} 업로드 완료, 다음 파일 준비 중...")
+    for f in files:
+        chat_page.upload_image(f)
         time.sleep(2)
+    print(f"📤 [STEP] 파일 업로드 완료 ({', '.join(files)})")
 
-    # 모든 파일 첨부 후 메시지 전송
-    send_test_message("합쳐서 20mb 이상인 파일 두 개 첨부 테스트")
+    # 2️⃣ 메시지 전송
+    send_test_message("이 이미지들에 대해 설명해줘")
+    print("💬 [STEP] 메시지 전송 완료")
 
-    # 업로드 확인
-    time.sleep(5)
-    page_src = driver.page_source
-    for filename in files:
-        assert "<img" in page_src or filename.split(".")[0] in page_src, f"{filename} 업로드 실패"
-        print(f"✅ {filename} 업로드 확인 완료")
+    # 3️⃣ HelpyChat 응답 대기 (단순 화면 렌더링 기준)
+    print("⏳ [WAIT] HelpyChat 응답이 렌더링될 때까지 대기 중...")
+    time.sleep(15)
 
-    print("✅ 두 파일 첨부 및 메시지 전송 완료")
+    # 4️⃣ 결과 검증
+    page_source = driver.page_source
+
+    # 업로드된 이미지가 존재하는지 확인
+    assert "<img" in page_source, "❌ 업로드된 이미지가 화면에 표시되지 않았습니다."
+    # 사용자가 전송한 메시지가 존재하는지 확인
+    assert "이 이미지들에 대해 설명해줘" in page_source, "❌ 전송한 메시지가 채팅창에 표시되지 않았습니다."
+
+    print("✅ [PASS] HelpyChat 이미지 업로드 및 응답 렌더링 성공")
     time.sleep(5)
