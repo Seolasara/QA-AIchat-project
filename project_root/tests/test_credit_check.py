@@ -20,7 +20,7 @@ def test_BILL001_credit_check(login):
     credit_text = credit_element.text.strip()
     print(f"추출 결과: {credit_text}")
 
-    assert ("크레딧" in credit_text) or ("₩" in credit_text), "[FAIL] 크레딧 표시X"
+    assert ("크레딧" in credit_text) or ("₩" in credit_text), "⛔ [FAIL] 크레딧 표시X"
     print("✅ [PASS] 잔여 크레딧 표시 확인")
 
     
