@@ -5,8 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from src.utils.config_reader import read_config
 
-
-def test_scroll_to_top_and_click_latest(driver, login, send_test_message, timeout=150):
+# CBAS074: 최근 메시지 보기
+def test_CBAS074_chat_basic(driver, login, send_test_message, timeout=150):
     """
     ✅ HelpyChat '오늘 주요 기사 요약해줘' 메시지 전송 후,
     1️⃣ 응답 완료 (텍스트 + 높이 안정화)
