@@ -50,14 +50,14 @@ def test_CSTM011_large_image(new_agent):
 
 
 
-    # --- 모든 기능 설정한 에이전트 생성 --- 
+# --- 모든 기능 설정한 에이전트 생성 --- 
 def test_CSTM013_with_all_functions(new_agent):
     wait = WebDriverWait(new_agent.driver, 10)
 
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     image_path = os.path.join(project_root, "src", "resources", "20.5mb.jpg")
 
-    # 1. 이미지 업로드
+    # 이미지 업로드
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "svg[data-testid='plusIcon']"))).click()
     image_input = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']"))).send_keys(image_path)
     assert os.path.exists(image_path), f"⛔ [FAIL] 파일 없음: {image_path}"
@@ -66,22 +66,20 @@ def test_CSTM013_with_all_functions(new_agent):
     assert image.is_displayed(), "⛔ [FAIL] 이미지 업로드 실패"
     print("✅ [PASS] 이미지 업로드 성공") 
 
-    # 2. 입력 필드 이름/한줄 소개/규칙/시작대화 입력 
+    # 입력 필드 이름/한줄 소개/규칙/시작대화 입력 
     new_agent.set_name("테스트2")
-    time.sleep(2)
+    time.sleep(0.5)
     new_agent.set_description("테스트2")
     new_agent.set_rules("테스트2")
     new_agent.set_start_message("테스트2")
 
-    # 3. 파일 업로드(1번과 같은 파일)
-    file_input = wait.until(EC.presence_of_element_located((By.XPATH, "(//input[@type='file'])[2]"))).send_keys(image_path)
-    assert os.path.exists(image_path), f"⛔ [FAIL] 파일 없음: {image_path}"
-
+    # 파일 업로드(1번과 같은 파일)
+    new_agent.upload_file("20.5mb.jpg")
     file = wait.until(EC.visibility_of_element_located((By.XPATH, "//p[text()='20.5mb.jpg']")))
     assert file.is_displayed(), "⛔ [FAIL] 파일 업로드 실패"
     print("✅ [PASS] 파일 업로드 성공")
 
-    # 4. 기능 전체 선택
+    # 기능 전체 선택
     new_agent.checkbox_functions("search", "browsing", "image", "execution")
 
     checkboxes = [
@@ -95,11 +93,11 @@ def test_CSTM013_with_all_functions(new_agent):
         assert new_agent.driver.find_element(*box).is_selected()
     print("✅ [PASS] 모든 기능 체크박스 선택 완료")
     
-    # 5. 만들기/저장 클릭
+    # 만들기/저장 클릭
     new_agent.click_create()
     new_agent.click_save()
 
-    # 6. 에이전트 생성 메세지 확인
+    # 에이전트 생성 메세지 확인
     text = wait.until(EC.presence_of_element_located((By.ID, "notistack-snackbar"))).text.strip()
     assert "에이전트가 생성 되었습니다." in text, "⛔ [FAIL] 생성 실패"
     print("✅ [PASS] 에이전트 생성 완료") 
@@ -109,32 +107,29 @@ def test_CSTM013_with_all_functions(new_agent):
 # --- 다양한 확장자 업로드 테스트 ---
 def test_CSTM015_upload_extensions(new_agent):
     wait = WebDriverWait(new_agent.driver, 10)
-
-    # 파일 경로
-    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
     files = [
-        os.path.join(project_root, "src", "resources", "testfile2.pdf"),
-        os.path.join(project_root, "src", "resources", "test.xlsx"),
-        os.path.join(project_root, "src", "resources", "test.docx"),
-        os.path.join(project_root, "src", "resources", "test.pptx"),
-        os.path.join(project_root, "src", "resources", "18mb.jpg"),
-        os.path.join(project_root, "src", "resources", "helpy chat.png"),
-        os.path.join(project_root, "src", "resources", "test.html"),
-        os.path.join(project_root, "src", "resources", "test.xml"),
+        "testfile2.pdf",
+        "test.xlsx",
+        "test.docx",
+        "test.pptx",
+        "18mb.jpg",
+        "helpy chat.png",
+        "test.html",
+        "test.xml",
     ]
-
-    # 파일 input 찾기
+    
+    # 경로 변환
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    full_paths = [os.path.join(project_root, "src", "resources", file) for file in files]
+    
+    # file_input 찾아서 한 번에 업로드
     file_input = wait.until(EC.presence_of_element_located((By.XPATH, "(//input[@type='file'])[2]")))
-
-    # 한 번에 업로드
-    file_input.send_keys("\n".join(files))
-
-    # 확장자 검증
-    for file_path in files:
-        extension = os.path.splitext(file_path)[1] # 확장자 추출
-        filename = os.path.basename(file_path) # 파일명 추출
-        uploaded_file = wait.until(EC.visibility_of_element_located((By.XPATH, f"//p[text()='{filename}']")))
-
-        assert uploaded_file.is_displayed(), f"⛔ [FAIL] {extension} 확장자 업로드 실패"
-        print(f"✅ [PASS] {extension} 확장자 업로드 성공")
-
+    file_input.send_keys("\n".join(full_paths))
+    
+    # 각 파일 업로드 확인
+    for file in files:
+        extension = os.path.splitext(file)[1]
+        uploaded_file = wait.until(EC.visibility_of_element_located((By.XPATH, f"//p[text()='{file}']")))
+        assert uploaded_file.is_displayed(), f"⛔ [FAIL] {extension} 업로드 실패"
+        print(f"✅ [PASS] {extension} 업로드 성공")
