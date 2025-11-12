@@ -29,3 +29,8 @@ class LoginPage:
         self.enter_email(self.config["login_id"])
         self.enter_password(self.config["login_pw"])
         self.click_login_button()
+
+    def login2(self):
+        self.enter_email("team2a@elice.com")
+        self.enter_password("team2elice!@")
+        self.click_login_button()
