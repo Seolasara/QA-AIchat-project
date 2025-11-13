@@ -7,6 +7,7 @@ from src.pages.login_page import LoginPage
 def test_HIST001_newchat_create(driver,send_test_message,login) :
     
     # 새 채팅 세션을 만들기 위한 기존 세션 생성
+    time.sleep(2)
     send_test_message("새 채팅을 테스트하기 위한 테스트 채팅 메일입니다(답장하지마)")
 
     # 새 채팅 세션 생성
