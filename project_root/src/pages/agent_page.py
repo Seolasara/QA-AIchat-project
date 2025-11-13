@@ -17,7 +17,7 @@ class AgentPage(BasePage):
             "agent_settings" : (By.CSS_SELECTOR, "button[value='form']"),
             # 입력 필드
             "name_field" : (By.NAME, "name"),
-            "description_field" : (By.NAME, "description"),
+            "description_field" : (By.CSS_SELECTOR, "input[name='description']"),
             "rules_field" : (By.NAME, "systemPrompt"),
             "start_message": (By.NAME, "conversationStarters.0.value"),
             # 업로드 필드
@@ -104,6 +104,7 @@ class AgentPage(BasePage):
             EC.element_to_be_clickable(self.locators["save_button"])
         ).click()
 
+    # 파일 업로드(단일)
     def upload_file(self, file_path):
         self.wait = WebDriverWait(self.driver, 10)
         project_root = os.path.dirname(
@@ -114,3 +115,12 @@ class AgentPage(BasePage):
             EC.presence_of_element_located((By.XPATH, "(//input[@type='file'])[2]"))
         )
         file_input.send_keys(file_path)
+
+    # input 기존내용 삭제
+    def clear_input(self, locator_key): 
+        element = self.driver.find_element(*self.locators[locator_key]) 
+        element.click() 
+        current_value = element.get_attribute("value") 
+        for _ in range(len(current_value)): 
+            element.send_keys(Keys.BACKSPACE) 
+        time.sleep(0.2)
