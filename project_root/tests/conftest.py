@@ -7,6 +7,7 @@ from src.pages.login_page import LoginPage
 from selenium.webdriver.support.ui import WebDriverWait
 from src.pages.agent_page import AgentPage
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import InvalidElementStateException
 
 
 @pytest.fixture(scope="function")
@@ -26,12 +27,13 @@ def driver():
         "download.prompt_for_download": False,  # 다운로드 다이얼로그 안 띄움
     }
     chrome_options.add_experimental_option("prefs", prefs)
-
-    driver = webdriver.Chrome(options=chrome_options)
-    #driver.maximize_window()
-    driver.implicitly_wait(5)
-    yield driver
-    driver.quit()
+    try:
+        driver = webdriver.Chrome(options=chrome_options)
+        #driver.maximize_window()
+        driver.implicitly_wait(5)
+        yield driver
+    finally:
+        driver.quit()
 
 
 @pytest.fixture
@@ -40,7 +42,10 @@ def send_test_message(driver):
     def _create_chat(message):
         # 메시지 입력 및 전송
         message_box = driver.find_element(By.CSS_SELECTOR, "textarea[placeholder='메시지를 입력하세요...']")
-        message_box.clear()
+        try:
+            message_box.clear()
+        except InvalidElementStateException:
+            pass
         message_box.send_keys(message)
         driver.find_element(By.ID, "chat-submit").click()
         time.sleep(3)
