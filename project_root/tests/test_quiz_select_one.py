@@ -22,7 +22,7 @@ def test_CADV086_quiz_multiple_choice(driver, login, click_plus, send_test_messa
     driver.execute_script("arguments[0].click();", quiz_button)
 
     # 메시지 전송 (객관식)
-    send_test_message("우리나라 동물에 관한 퀴즈 객관식으로 만들어줘")
+    send_test_message("우리나라 동물에 관한 3글자 이름 맞추기 객관식으로 만들어줘")
     print("✅ 메시지 전송 완료")
 
     # 퀴즈 생성

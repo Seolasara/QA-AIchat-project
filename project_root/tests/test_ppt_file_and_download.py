@@ -25,7 +25,7 @@ def test_CADV078_ppt_create_and_download(driver, login, click_plus, send_test_me
     print("✅ 'PPT 생성' 버튼 클릭 완료")
 
     # ✅ HelpyChat 메시지 전송
-    send_test_message("겨울에 주로 먹는 음식에 대한 ppt 3페이지 정도로 만들어줘")
+    send_test_message("우리나라 동물에 대한 ppt 3페이지로 만들어줘")
     time.sleep(3)
 
     # ✅ '생성' 버튼 클릭
