@@ -3,89 +3,136 @@ pipeline {
 
     environment {
         WORKDIR = "project_root"
-        PYTHONPATH = "${WORKSPACE}/${WORKDIR}"
-        PYTHONUNBUFFERED = "1"
+        VENV = "venv"
     }
 
     stages {
-        stage('Checkout') {
+
+        /* --- 1. 프로젝트 체크아웃 --- */
+        stage('준비') {
             steps {
                 checkout scm
+                echo "📌 HelpyChat QA Pipeline Started"
+
+                dir("${WORKDIR}") {
+                    echo "📁 Working directory: ${WORKDIR}"
+                }
             }
         }
 
-        stage('Set Up Python Environment') {
+        /* --- 2. Python 가상환경 생성 + 패키지 설치 --- */
+        stage('의존성 설치') {
             steps {
-                dir("${WORKDIR}") {
-                    script {
+                script {
+                    dir("${WORKDIR}") {
                         if (isUnix()) {
-                            sh '''
-                                set -e
-
-                                # python3 우선, 없으면 python
-                                (command -v python3 >/dev/null 2>&1 && python3 -m venv venv) || python -m venv venv
-
-                                . venv/bin/activate
+                            sh """
+                                python3 -m venv ${VENV}
+                                . ${VENV}/bin/activate
                                 pip install --upgrade pip
-
-                                if [ -f requirements.txt ]; then
-                                    pip install -r requirements.txt
-                                else
-                                    pip install pytest
-                                fi
-                            '''
+                                pip install -r requirements.txt
+                            """
                         } else {
-                            bat '''
-                                @echo off
-                                py -3 -m venv venv || python -m venv venv
-
-                                call venv\\Scripts\\activate.bat
-                                python -m pip install --upgrade pip
-
-                                if exist requirements.txt (
-                                    pip install -r requirements.txt
-                                ) else (
-                                    pip install pytest
-                                )
-                            '''
+                            bat """
+                                python -m venv ${VENV}
+                                call ${VENV}\\Scripts\\activate
+                                pip install --upgrade pip
+                                pip install -r requirements.txt
+                            """
                         }
                     }
                 }
             }
         }
 
-        stage('Run pytest') {
+        /* --- 3. 전체 테스트 실행 --- */
+        stage('전체 테스트 실행') {
             steps {
-                dir("${WORKDIR}") {
-                    script {
+                script {
+                    dir("${WORKDIR}") {
                         if (isUnix()) {
-                            sh '''
-                                set -e
-                                . venv/bin/activate
-                                pytest src/tests/ --junitxml=pytest-report.xml
-                            '''
+                            sh """
+                                . ${VENV}/bin/activate
+                                pytest tests -v \
+                                    --junit-xml=reports/all-results.xml \
+                                    --html=reports/report.html \
+                                    --self-contained-html
+                            """
                         } else {
-                            bat '''
-                                @echo off
-                                call venv\\Scripts\\activate.bat
-                                pytest src\\tests\\ --junitxml=pytest-report.xml
-                            '''
+                            bat """
+                                call ${VENV}\\Scripts\\activate
+                                pytest tests -v ^
+                                    --junit-xml=reports\\all-results.xml ^
+                                    --html=reports\\report.html ^
+                                    --self-contained-html
+                            """
                         }
                     }
                 }
+            }
+        }
+
+        /* --- 4. 커버리지 분석 --- */
+        stage('커버리지 분석') {
+            steps {
+                script {
+                    dir("${WORKDIR}") {
+                        if (isUnix()) {
+                            sh """
+                                . ${VENV}/bin/activate
+                                pytest --cov=src \
+                                       --cov-report=html:reports/htmlcov \
+                                       --cov-report=xml:reports/coverage.xml
+                            """
+                        } else {
+                            bat """
+                                call ${VENV}\\Scripts\\activate
+                                pytest --cov=src ^
+                                       --cov-report=html:reports\\htmlcov ^
+                                       --cov-report=xml:reports\\coverage.xml
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
+        /* --- 5. 브랜치 조건부 배포 --- */
+        stage('배포') {
+            when { anyOf { branch 'develop'; branch 'main' } }
+            steps {
+                echo "🚀 배포 단계 (현재는 메시지만 출력)"
             }
         }
     }
 
+    /* --- 6. 테스트 리포트 업로드 --- */
     post {
         always {
-            junit allowEmptyResults: true, testResults: "${WORKDIR}/pytest-report.xml"
+            // JUnit XML 업로드
+            junit "project_root/reports/all-results.xml"
+
+            // Coverage Report 업로드
+            publishHTML([
+                reportDir: 'project_root/reports/htmlcov',
+                reportFiles: 'index.html',
+                reportName: 'Coverage Report'
+            ])
+
+            // Test HTML Report 업로드
+            publishHTML([
+                reportDir: 'project_root/reports',
+                reportFiles: 'report.html',
+                reportName: 'Test HTML Report'
+            ])
         }
+
         success {
-            echo '테스트 자동화가 성공적으로 완료되었습니다!ㅇㅇㅇㅇ'
+            echo "✅ HelpyChat QA Pipeline ALL PASSED!"
         }
+
         failure {
-            echo '테스트 자동화 중 일부 테스트가 실패했습니다. 리포트를 확인해주세요.'
+            echo "❌ Pipeline FAILED — 확인 필요"
         }
     }
 }
