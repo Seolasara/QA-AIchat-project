@@ -53,7 +53,7 @@ pipeline {
                         if (isUnix()) {
                             sh """
                                 . ${VENV}/bin/activate
-                                pytest tests -k HIST \
+                                pytest tests -k BILL \
                                     --junit-xml=reports/all-results.xml \
                                     --html=reports/report.html \
                                     --self-contained-html
@@ -61,7 +61,7 @@ pipeline {
                         } else {
                             bat """
                                 call ${VENV}\\Scripts\\activate
-                                pytest tests -k HIST ^
+                                pytest tests -k BILL ^
                                     --junit-xml=reports\\all-results.xml ^
                                     --html=reports\\report.html ^
                                     --self-contained-html
