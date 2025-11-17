@@ -122,3 +122,35 @@ def language(login2):
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "div[data-menu-id='locale_setting']"))).click()
     time.sleep(1) # UI가 완전히 뜰 때까지 조금 더 대기(다른 요소에 의한 요소 가림 방지)
     return driver
+
+
+@pytest.hookimpl
+def pytest_sessionstart(session):
+    """
+    테스트 시작 전 Allure reports 폴더 초기화
+    """
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    allure_reports_dir = os.path.join(base_dir, "reports", "allure")
+
+    print("🧹 삭제할 Allure 폴더:", allure_reports_dir)
+
+    if os.path.exists(allure_reports_dir):
+        shutil.rmtree(allure_reports_dir)
+        print("✔ Allure reports 폴더 삭제 완료!")
+
+    # 삭제 후 새 폴더 생성
+    os.makedirs(allure_reports_dir, exist_ok=True)
+    print("📁 Allure reports 폴더 생성 완료!")
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """테스트 실패 시 자동으로 스크린샷 첨부"""
+    outcome = yield
+    result = outcome.get_result()
+
+    # 테스트 단계가 실패(FAILED)일 때만
+    if result.when == "call" and result.failed:
+        driver = item.funcargs.get("driver")
+        if driver:
+            attach_screenshot(driver, name=item.name)
