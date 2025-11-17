@@ -1,13 +1,16 @@
 import pytest
+import os
+import shutil
+import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-import time
 from src.pages.login_page import LoginPage
 from selenium.webdriver.support.ui import WebDriverWait
-from src.pages.agent_page import AgentPage
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import InvalidElementStateException
+from src.utils.allure_helper import attach_screenshot
+from src.pages.agent_page import AgentPage
 
 
 @pytest.fixture(scope="function")
@@ -18,13 +21,6 @@ def driver():
     chrome_options.add_argument("--disable-popup-blocking")  # 팝업 차단 해제
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-
-    # 테스트 안정화 - 백그라운드 전환시 크롬 렌더링 멈춤 방지, gpu버그로 인한 로딩 FREEZE 방지
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--remote-allow-origins=*")
-    chrome_options.add_argument("--disable-renderer-backgrounding")
-    chrome_options.add_argument("--disable-background-timer-throttling")
-    chrome_options.add_argument("--disable-backgrounding-occluded-windows")
 
     # 💡 '여러 파일 다운로드' 자동 허용 설정
     prefs = {
