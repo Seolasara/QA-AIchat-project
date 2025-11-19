@@ -3,7 +3,7 @@
 
 HelpyChat QA 프로젝트는 HelpyChat 서비스의 **핵심 기능 품질을 보증(QA)** 하고
 
-**테스트 자동화 기반 CI/CD 프로세스 구축**을 목표로 합니다.
+**테스트 자동화 기반 CI 프로세스 구축**을 목표로 합니다.
 
 <br>
 
@@ -129,7 +129,6 @@ HelpyChat QA 프로젝트는 HelpyChat 서비스의 **핵심 기능 품질을 �
 
 - **Python**: 3.10 이상
 - **Allure CLI**: 테스트 결과 리포트 시각화
-- **Docker**: Jenkins CI/CD 환경 구성
 - **Jenkins LTS**: 자동화 파이프라인
 - 요구 라이브러리: `requirements.txt` 참조
 
@@ -167,14 +166,14 @@ allure serve reports/allure/results
 
 - **병렬 실행**으로 테스트 시간 **40~60% 단축**
 - **Allure Report 기반 시각화**로 테스트 품질 보고 체계 개선
-- **Jenkins + Docker**를 활용한 자동화 테스트 파이프라인 구축
+- **Jenkins**를 활용한 자동화 테스트 파이프라인 구축
 - **플러그인 기반 구조**로 재사용 가능한 테스트 자동화 설계
 - 헬피챗 **누락 결함** 10개 발견
 
 ### 프로젝트 강점
 
 - Allure 리포트 사용으로 **개발자와 기획자가 손쉽게 테스트 결과 확인**
-- CI/CD 자동화 적용으로 **QA 수동 실행 불필요**
+- CI 자동화 적용으로 **QA 수동 실행 불필요**
 - Flaky 테스트 자동 재시도 적용 (`rerun plugin`)으로 **테스트 안정성 확보**
 
 <br>
@@ -184,7 +183,7 @@ allure serve reports/allure/results
 | 분야 | 기술 / 도구 |
 |------|-------------|
 | **Testing** | ![Python](https://img.shields.io/badge/Python-3.10-blue?logo=python&logoColor=white) ![Pytest](https://img.shields.io/badge/Pytest-Automation-green?logo=pytest&logoColor=white) ![Selenium](https://img.shields.io/badge/Selenium-UI%20Automation-red?logo=selenium&logoColor=white) ![Xdist](https://img.shields.io/badge/Pytest--xdist-Parallel-orange) ![Rerun](https://img.shields.io/badge/Pytest--rerunfailures-Flaky-blue) ![Allure](https://img.shields.io/badge/Allure-Report-important) |
-| **DevOps** | ![Jenkins](https://img.shields.io/badge/Jenkins-CI-orange?logo=jenkins&logoColor=white) ![Docker](https://img.shields.io/badge/Docker-Container-blue?logo=docker&logoColor=white) ![GitLab](https://img.shields.io/badge/GitLab-VCS-red?logo=gitlab&logoColor=white) ![Webhook](https://img.shields.io/badge/Webhook-Trigger-purple) |
+| **DevOps** | ![Jenkins](https://img.shields.io/badge/Jenkins-CI-orange?logo=jenkins&logoColor=white) ![GitLab](https://img.shields.io/badge/GitLab-VCS-red?logo=gitlab&logoColor=white) ![Webhook](https://img.shields.io/badge/Webhook-Trigger-purple) |
 
 <br>
 
