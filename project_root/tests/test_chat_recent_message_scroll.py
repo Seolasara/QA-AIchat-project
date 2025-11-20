@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from src.utils.config_reader import read_config
 
 
-def test_scroll_to_top_and_click_latest(driver, login, send_test_message, timeout=150):
+def test_CBAS076_scroll_to_top_and_click_latest(driver, login, send_test_message, timeout=150):
     """맨위로 스크롤 후 최신메시지로 이동 테스트"""
 
     config = read_config("helpychat")
