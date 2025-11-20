@@ -199,6 +199,7 @@ allure serve reports/allure/results
 pip install pytest allure-pytest
 
 2️⃣ Allure CLI 설치
+
 ▪️macOS
 ```bash
 brew install allure
