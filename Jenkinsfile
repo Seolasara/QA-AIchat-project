@@ -4,7 +4,8 @@ pipeline {
     environment {
         WORKDIR = "project_root"
         VENV = "venv"
-        ALLURE_DIR = "reports/allure"
+        ALLURE_LOCAL = "reports/allure"       // 로컬용 일회성
+        ALLURE_JENKINS = "reports/allure-jobs" // Jenkins용
     }
 
     stages {
@@ -17,7 +18,7 @@ pipeline {
             }
         }
 
-        /* --- 2. Python 가상환경 생성 + 최신 requirements 설치 --- */
+        /* --- 2. Python 가상환경 생성 + requirements 설치 --- */
         stage('환경 설정') {
             steps {
                 dir("${WORKDIR}") {
@@ -33,19 +34,21 @@ pipeline {
             }
         }
 
-        /* --- 3. pytest 실행 (JUnit + Allure 결과 생성) --- */
+        /* --- 3. pytest 실행 (Jenkins용 Allure 결과 생성) --- */
         stage('전체 테스트 실행') {
             steps {
                 dir("${WORKDIR}") {
-                    sh """
-                        echo "📂 Allure 결과 폴더 생성 (빈 폴더라도 존재)"
-                        mkdir -p reports/allure
+                    catchError(buildResult: 'SUCCESS', stageResult: 'SUCCESS') {
+                        sh """
+                            echo "📂 Jenkins용 Allure 결과 폴더 생성"
+                            mkdir -p ${ALLURE_JENKINS}
 
-                        echo "🧪 pytest 실행"
-                        ${VENV}/bin/python -m pytest \
-                            --junit-xml=reports/all-results.xml \
-                            --alluredir=reports/allure
-                    """
+                            echo "🧪 pytest 실행 (JUnit + Allure)"
+                            ${VENV}/bin/python -m pytest \
+                                --junit-xml=reports/all-results.xml \
+                                --alluredir=${ALLURE_JENKINS}
+                        """
+                    }
                 }
             }
         }
@@ -68,18 +71,10 @@ pipeline {
             // JUnit 리포트
             junit allowEmptyResults: true, testResults: "${WORKDIR}/reports/all-results.xml"
 
-            // HTML Coverage 리포트
-            publishHTML([
-                allowMissing: true,
-                reportDir: "${WORKDIR}/reports/htmlcov",
-                reportFiles: 'index.html',
-                reportName: 'Coverage Report'
-            ])
-
             // Allure 리포트
             allure([
                 includeProperties: false,
-                results: [[path: "${WORKDIR}/reports/allure"]],
+                results: [[path: "${WORKDIR}/${ALLURE_JENKINS}"]],
                 commandline: 'Allure'
             ])
         }
