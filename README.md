@@ -1,4 +1,4 @@
-# AI HelpyChat QA Project
+# AI HelpyChat QA Project (4인)
 
 
 HelpyChat은 AI 기반 멀티모달 챗봇 서비스이며, 본 프로젝트는 해당 서비스의 품질을 보증하기 위해 **272개 테스트 케이스 설계 및 자동화 구축**을 목표로 수행되었습니다.
